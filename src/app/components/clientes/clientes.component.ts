@@ -54,27 +54,13 @@ Titulo = "Clientes";
       Activo: [true]
     });
     this.FormReg = this.formBuilder.group({
-      IdArticulo: [0],
+      IdCliente: [0],
       Nombre: [
         "",
         [Validators.required, Validators.minLength(4), Validators.maxLength(55)]
       ],
-      Precio: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
-      Stock: [null, [Validators.required, Validators.pattern("[0-9]{1,7}")]],
-      CodigoDeBarra: [
-        "",
-        [Validators.required, Validators.pattern("[0-9]{13}")]
-      ],
-      IdArticuloFamilia: ["", [Validators.required]],
-      FechaAlta: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(
-            "(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[012])[-/](19|20)[0-9]{2}"
-          )
-        ]
-      ],
+      NumeroDocumento: [null, [Validators.required, Validators.pattern("[0-9]{1,10}")]],
+      TieneTrabajo: [null],
       Activo: [true]
     });
 
@@ -98,11 +84,10 @@ Titulo = "Clientes";
   // Buscar segun los filtros, establecidos en FormReg
   Buscar() {
     this.SinBusquedasRealizadas = false;
-    this.clientesService
-      .get().subscribe((res: any) => {
-        this.Lista = res.Lista;
-        this.RegistrosTotal = res.RegistrosTotal;
-      });
+    this.clientesService.getClientes().subscribe({
+      next: Cliente =>{ this.Lista = Cliente}
+     
+    });
   }
 
   // Obtengo un registro especifico según el Id
@@ -161,8 +146,8 @@ Titulo = "Clientes";
     //   ).toISOString();
 
     // agregar post
-    if (itemCopy.IdArticulo == 0 || itemCopy.IdArticulo == null) {
-      itemCopy.IdArticulo = 0;
+    if (itemCopy.IdCliente == 0 || itemCopy.IdCliente == null) {
+      itemCopy.IdCliente = 0;
       this.clientesService.post(itemCopy).subscribe((res: any) => {
         this.Volver();
         this.modalDialogService.Alert("Registro agregado correctamente.");

@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
   HttpParams
 } from "@angular/common/http";
-import { of } from "rxjs";
+import { Observable, of } from "rxjs";
 import { Cliente } from "../models/cliente";
 
 @Injectable({ providedIn: "root" })
@@ -16,6 +16,11 @@ resourceUrl: string;
     //this.resourceUrl = "https://pavii.ddns.net/api/articulos/";
     this.resourceUrl = "https://demo3151356.mockable.io/clientes";
   }
+
+    getClientes(): Observable<Cliente[]>{
+    return this.httpClient.get<Cliente[]>(this.resourceUrl);
+  }
+
 
   get() {
     let params = new HttpParams();
@@ -28,5 +33,8 @@ resourceUrl: string;
     return this.httpClient.post(this.resourceUrl, obj);
   }
 
+  postClientes (obj: Cliente): Observable<Cliente[]>{
+    return this.httpClient.post<Cliente[]>(this.resourceUrl, obj)
+  }
 
 }
